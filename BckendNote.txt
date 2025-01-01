@@ -1,0 +1,12 @@
+
+
+example :-
+
+
+registration form :- student data  (main table )
+
+        1) yogi 24 Engg 1 
+
+using perl scripting 
+
+Need to move the main table data into log table 

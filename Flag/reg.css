@@ -1,0 +1,26 @@
+.contianer{
+    height: auto;
+    width: 30%;
+    padding: 20px;
+    margin: 100px auto;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.contianer input{
+    height: 35px;
+    width: 100%;
+    margin: 5px 0;
+    padding: 0 5px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+#subBtn{
+    width: 100%;
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: white;
+    background-color: rgb(54, 131, 247);
+}

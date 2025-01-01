@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Data</title>
+    <link rel="stylesheet" href="reg.css">
+</head>
+<body>
+    <div class="container">
+        <form onsubmit="return submitfun(event)">
+            <input type="text" placeholder="First Name" name="fname" id="fname" required>
+            <br><br>
+            <input type="text" placeholder="Last Name" name="lname" id="lname" required>
+            <br><br>
+            <input type="text" placeholder="Mobile" name="mobile" id="mobile" required>
+            <br><br>
+            <input type="text" placeholder="Email" name="email" id="email" required>
+            <br><br>
+            <input type="text" placeholder="Address" name="address" id="address" required>
+            <br><br>
+            <input type="submit" value="Submit" name="submit" id="subBtn">
+        </form>
+    </div>
+
+    <script>
+        function submitfun(event) {
+            event.preventDefault();  // Prevent form submission
+
+            // Get the values from the form
+            let fname = document.getElementById("fname").value;
+            let lname = document.getElementById("lname").value;
+            let mobile = document.getElementById("mobile").value;
+            let email = document.getElementById("email").value;
+            let address = document.getElementById("address").value;
+
+            // Log the values (for debugging)
+            console.log(fname, lname, mobile, email, address);
+
+            // Send the data to the Perl backend using Fetch API (POST request)
+            fetch('curd.pl', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    fname: fname,
+                    lname: lname,
+                    mobile: mobile,
+                    email: email,
+                    address: address
+                })
+            })
+            .then(response => {
+                // Check if the response is ok
+                if (!response.ok) {
+                    throw new Error('Server error: ' + response.statusText);
+                }
+                // Try to parse the response as JSON
+                return response.json();
+            })
+            .then(data => {
+                // Check if data is received correctly
+                if (data.message === "inserted") {
+                    alert("Data inserted successfully!");
+                    document.querySelector("form").reset();  // Reset the form
+                } else {
+                    alert("Data not inserted: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("There was an error with the request.");
+            });
+        }
+    </script>
+</body>
+</html>

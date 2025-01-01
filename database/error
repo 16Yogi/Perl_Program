@@ -1,0 +1,106 @@
+[dtel@localhost ~]$ rpm -qa | grep mariadb
+mariadb-embedded-5.5.68-1.el7.x86_64
+[dtel@localhost ~]$ wget https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+--2024-11-15 11:53:16--  https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+Resolving downloads.mariadb.com (downloads.mariadb.com)... 104.17.191.14, 104.18.135.24, 2606:4700:9766:a4d9:a89e:0:6811:bf0e
+Connecting to downloads.mariadb.com (downloads.mariadb.com)|104.17.191.14|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 36734 (36K) [application/octet-stream]
+Saving to: ‘mariadb_repo_setup’
+
+100%[======================================>] 36,734      --.-K/s   in 0.04s   
+
+2024-11-15 11:53:22 (916 KB/s) - ‘mariadb_repo_setup’ saved [36734/36734]
+
+[dtel@localhost ~]$ sudo bash mariadb_repo_setup
+# [info] Checking for script prerequisites.
+# [info] MariaDB Server version 11.rolling is valid
+# [info] Repository file successfully written to /etc/yum.repos.d/mariadb.repo
+# [info] Adding trusted package signing keys...
+/etc/pki/rpm-gpg /home/dtel
+/home/dtel
+# [info] Successfully added trusted package signing keys
+# [info] Cleaning package cache...
+Loaded plugins: fastestmirror, langpacks
+Repository centos-sclo-sclo is listed more than once in the configuration
+Cleaning repos: base centos-sclo-sclo code epel extras gh-cli google-chrome
+              : mariadb-main mariadb-maxscale mariadb-tools
+              : mysql-connectors-community mysql-tools-community
+              : mysql57-community nodesource-nodejs nodesource-nsolid remi-php74
+              : remi-safe rpmfusion-free-updates updates virtualbox
+Cleaning up list of fastest mirrors
+Other repos take up 91 M of disk space (use --verbose for details)
+[dtel@localhost ~]$ sudo yum install mariadb-server
+Loaded plugins: fastestmirror, langpacks
+Repository centos-sclo-sclo is listed more than once in the configuration
+Determining fastest mirrors
+epel/x86_64/metalink                                     | 5.1 kB     00:00     
+ * epel: d2lzkl7pfhq30w.cloudfront.net
+ * remi-php74: repo.extreme-ix.org
+ * remi-safe: repo.extreme-ix.org
+ * rpmfusion-free-updates: ftp.nluug.nl
+base                                                     | 3.6 kB     00:00     
+centos-sclo-sclo                                         | 3.0 kB     00:00     
+code                                                     | 1.5 kB     00:00     
+epel                                                     | 4.3 kB     00:00     
+extras                                                   | 2.9 kB     00:00     
+gh-cli                                                   | 3.0 kB     00:00     
+google-chrome                                            | 1.3 kB     00:00     
+mariadb-main                                             | 3.4 kB     00:00     
+https://dlm.mariadb.com/repo/maxscale/latest/yum/rhel/7/x86_64/repodata/repomd.xml: [Errno 14] HTTPS Error 404 - Not Found
+Trying other mirror.
+To address this issue please refer to the below wiki article 
+
+https://wiki.centos.org/yum-errors
+
+If above article doesn't help to resolve this issue please use https://bugs.centos.org/.
+
+
+
+ One of the configured repositories failed (MariaDB MaxScale),
+ and yum doesn't have enough cached data to continue. At this point the only
+ safe thing yum can do is fail. There are a few ways to work "fix" this:
+
+     1. Contact the upstream for the repository and get them to fix the problem.
+
+     2. Reconfigure the baseurl/etc. for the repository, to point to a working
+        upstream. This is most often useful if you are using a newer
+        distribution release than is supported by the repository (and the
+        packages for the previous distribution release still work).
+
+     3. Run the command with the repository temporarily disabled
+            yum --disablerepo=mariadb-maxscale ...
+
+     4. Disable the repository permanently, so yum won't use it by default. Yum
+        will then just ignore the repository until you permanently enable it
+        again or use --enablerepo for temporary usage:
+
+            yum-config-manager --disable mariadb-maxscale
+        or
+            subscription-manager repos --disable=mariadb-maxscale
+
+     5. Configure the failing repository to be skipped, if it is unavailable.
+        Note that yum will try to contact the repo. when it runs most commands,
+        so will have to try and fail each time (and thus. yum will be be much
+        slower). If it is a very temporary problem though, this is often a nice
+        compromise:
+
+            yum-config-manager --save --setopt=mariadb-maxscale.skip_if_unavailable=true
+
+failure: repodata/repomd.xml from mariadb-maxscale: [Errno 256] No more mirrors to try.
+https://dlm.mariadb.com/repo/maxscale/latest/yum/rhel/7/x86_64/repodata/repomd.xml: [Errno 14] HTTPS Error 404 - Not Found
+[dtel@localhost ~]$ sudo systemctl start mariadb
+Failed to start mariadb.service: Unit not found.
+[dtel@localhost ~]$ sudo systemctl enable mariadb
+Failed to execute operation: No such file or directory
+[dtel@localhost ~]$ ls /etc/systemd/system/mariadb.service
+ls: cannot access /etc/systemd/system/mariadb.service: No such file or directory
+[dtel@localhost ~]$ sudo systemctl daemon-reload
+[dtel@localhost ~]$ sudo systemctl start mariadb
+Failed to start mariadb.service: Unit not found.
+[dtel@localhost ~]$ sudo mysql_secure_installation
+sudo: mysql_secure_installation: command not found
+[dtel@localhost ~]$ sudo systemctl status mariadb
+Unit mariadb.service could not be found.
+[dtel@localhost ~]$ ^C
+[dtel@localhost ~]$ 

@@ -1,0 +1,119 @@
+vim /etc/selinux/config
+SELINUX=disabled
+ 
+systemctl stop firewalld.service
+systemctl disable firewalld.service
+ 
+yum  install openssh*   mariadb* perl* httpd* ncurses* gcc* sox* make* screen* wget* libxm* vim* zip unzip
+ 
+yum -y install steuptool system-config-network* system-config-firewall* system-config-securitylevel-tui system-config-keyboard ntsysv system-config-network-tui
+ 
+yum -y install libtool* patch bison flex-devel gcc-c++ ncurses-flex libtermcap-devel autoconf* automake* autoconf libxml2-devel cmake net-tools*
+ 
+yum -y install php* 
+ 
+ 
+ 
+systemctl enable mariadb.service
+systemctl start mariadb.service
+ 
+systemctl enable httpd.service
+systemctl start httpd.service
+ 
+reboot
+ 
+cd /usr/src
+ 
+ 
+wget https://cpan.metacpan.org/authors/id/G/GA/GAAS/Digest-MD5-2.36.tar.gz
+tar -xvf Digest-MD5-2.36.tar 
+cd Digest-MD5-2.36*
+perl Makefile.PL 
+make
+make test
+make install
+cd ..
+
+wget https://cpan.metacpan.org/authors/id/G/GA/GAAS/Digest-SHA1-2.11.tar.gz
+tar -xvf Digest-SHA1-2.11.tar.gz
+cd Digest-SHA1-2.11
+perl Makefile.PL
+make
+make test
+make install 
+cd ..
+ 
+ 
+wget https://src.fedoraproject.org/repo/pkgs/perl-Net-Telnet/Net-Telnet-3.03.tar.gz/2f7d34b09d6117baefe89d44cff9d5fc/Net-Telnet-3.03.tar.gz
+tar -xvf Net-Telnet-3.03.tar.gz
+cd Net-Telnet-3.03
+perl Makefile.PL
+make
+make test
+make install 
+cd ..
+ 
+ 
+ 
+wget https://www.cpan.org/modules/by-module/CGI/OYAMA/Net-MySQL-0.08.tar.gz
+tar -xvf Net-MySQL-0.08.tar.gz
+cd Net-MySQL-0.08
+perl Makefile.PL
+make
+make test
+make install 
+cd ..
+ 
+ 
+ 
+wget https://cpan.metacpan.org/authors/id/J/JH/JHI/Time-HiRes-1.90.tar.gz
+tar -xvf Time-HiRes-1.90.tar.gz
+cd Time-HiRes-1.90
+perl Makefile.PL
+make
+make test
+make install 
+cd ..
+ 
+ 
+wget https://download.vicidial.com/packages/asterisk-perl-0.08.tar.gz
+tar -xvf asterisk-perl-0.08.tar.gz
+cd asterisk-perl-0.08
+perl Makefile.PL
+make
+make test
+make install 
+cd ..
+ 
+ 
+wget https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-2.10.2%2B2.10.2.tar.gz
+tar -xvf dahdi-linux-complete-2.10.2+2.10.2.tar.gz
+cd dahdi-linux-complete-2.10.2+2.10.2
+make
+make install no downloads
+make config no downloads
+service dahdi start
+dahdi_genconf   //error
+cd ..
+ 
+ 
+wget https://downloads.asterisk.org/pub/telephony/libpri/old/libpri-1.4.15.tar.gz
+tar -xvf libpri-1.4.15.tar.gz
+cd libpri-1.4*
+make 
+make install 
+cd ..
+ 
+ 
+wget https://downloads.asterisk.org/pub/telephony/asterisk/old-releases/asterisk-1.8.32.3.tar.gz
+tar -xvf asterisk-1.8.32.3.tar.gz
+cd asterisk-1.8.32*
+./configure
+make
+make install
+make samples 
+make config
+cd ..
+safe_asterisk
+
+
